@@ -1,18 +1,27 @@
-queryUser `{
+// const queryUser = `{
+//     user {
+//       id
+//       login
+//       firstName
+//       lastName
+//       campus
+//       auditRatio
+//       totalUp
+//       totalDown
+//       attrs
+//     }
+// }`
+
+const queryUser = `
+{
     user {
-      id
-      login
-      firstName
-      lastName
-      campus
-      auditRatio
-      totalUp
-      totalDown
-      attrs
+        firstName
+        lastName
     }
-}`
-  
-queryXp `{
+}
+`;
+
+const queryXp = `{
   transaction(where: {type: {_eq: "xp"}, eventId: {_eq: 56}}) {
     createdAt
     amount
@@ -20,8 +29,8 @@ queryXp `{
     type
   }
 }`
-  
-queryAudits `{
+
+const queryAudits = `{
   transaction(order_by: {createdAt: asc}, where: {type: {_regex: "up|down"}}) {
     type
     amount
@@ -30,17 +39,17 @@ queryAudits `{
   }
 }
 `
-  
-querySkills `{
+
+const querySkills = `{
   transaction(where: {eventId: {_eq: 56}, _and: {type: {_like: "skill_%"}}}) {
     type
     amount
     path
   }
 }`
-  
 
-queryXpTotal `{
+
+const queryXpTotal = `{
   transaction_aggregate {
     aggregate {
       sum {
@@ -49,8 +58,8 @@ queryXpTotal `{
     }
   }
 }`
-  
-queryProject `{
+
+const queryProject = `{
   xp_view: transaction(
     where: {
       type: {_eq: "xp"},
@@ -64,7 +73,6 @@ queryProject `{
     amount
     path
   }
-}` 
-  
+}`
 
-  
+export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal }
