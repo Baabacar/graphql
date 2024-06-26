@@ -1,25 +1,18 @@
-// const queryUser = `{
-//     user {
-//       id
-//       login
-//       firstName
-//       lastName
-//       campus
-//       auditRatio
-//       totalUp
-//       totalDown
-//       attrs
-//     }
-// }`
-
-const queryUser = `
-{
-    user {
-        firstName
-        lastName
+const queryUser = `{
+  user {
+    id
+    login
+    firstName
+    lastName
+    campus
+    auditRatio
+    totalUp
+    totalDown
+    events(where: {eventId: {_eq: 56}}) {
+      level
     }
-}
-`;
+  }
+}`;
 
 const queryXp = `{
   transaction(where: {type: {_eq: "xp"}, eventId: {_eq: 56}}) {
@@ -28,7 +21,7 @@ const queryXp = `{
     path
     type
   }
-}`
+}`;
 
 const queryAudits = `{
   transaction(order_by: {createdAt: asc}, where: {type: {_regex: "up|down"}}) {
@@ -37,17 +30,18 @@ const queryAudits = `{
     path
     createdAt
   }
-}
-`
+}`;
 
 const querySkills = `{
-  transaction(where: {eventId: {_eq: 56}, _and: {type: {_like: "skill_%"}}}) {
+  transaction(
+    where: {eventId: {_eq: 56}, _and: {type: {_like: "skill_%"}}}
+    distinct_on: type
+    order_by: [{type: asc}, {amount: desc}]
+  ) {
     type
     amount
-    path
   }
-}`
-
+}`;
 
 const queryXpTotal = `{
   transaction_aggregate {
@@ -57,7 +51,7 @@ const queryXpTotal = `{
       }
     }
   }
-}`
+}`;
 
 const queryProject = `{
   xp_view: transaction(
@@ -73,6 +67,6 @@ const queryProject = `{
     amount
     path
   }
-}`
+}`;
 
-export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal }
+export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal };
