@@ -1,6 +1,6 @@
 import { loginAuth, logout, checkAuth } from "./auth.js";
 import { homeHtml, loginHtml } from "./templates.js";
-import { executeGraphQLQuery } from "./utils.js";
+import { executeGraphQLQuery, convertBytes } from "./utils.js";
 import { queryUser, queryXp, queryAudits, querySkills, queryXpTotal, queryProject } from "./query.js";
 
 const Form = document.getElementById('loginForm');
@@ -41,14 +41,21 @@ async function fetchAllData() {
             project: projectResult.xp_view
         };
 
+        let skillsString = '';
+        data.skills.forEach(transaction => {
+            skillsString += `${transaction.type.replace("skill_","")}: ${transaction.amount}%<br>`;
+        });
+
         console.log("All data:", data);
         document.getElementById("userFullName").innerHTML = `
             Bienvenue, ${data.user.firstName} ${data.user.lastName} <br>
             Login: ${data.user.login} <br>
             Level: ${data.user.events[0].level}<br>
-            Audits ratio: ${data.user.auditRatio}<br>
+            Total XP: ${convertBytes(data.xpTotal)}<br>
+            Audits ratio: ${data.user.auditRatio.toFixed(1)}<br>
             Audits Done: ${data.user.totalUp}<br>
             Audits Received: ${data.user.totalDown}<br>
+            Skills: ${skillsString}<br>
         `;
         return data;
     } catch (error) {
@@ -85,7 +92,7 @@ function renderLogin() {
     if (form) {
         form.addEventListener("submit", loginAuth);
     }
-}  
+}
 
 checkAuth();
 

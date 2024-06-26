@@ -44,7 +44,9 @@ const querySkills = `{
 }`;
 
 const queryXpTotal = `{
-  transaction_aggregate {
+  transaction_aggregate(
+    where: {transaction_type: {type: {_eq: "xp"}}, event: {path: {_eq: "/dakar/div-01"}}}
+  ) {
     aggregate {
       sum {
         amount
