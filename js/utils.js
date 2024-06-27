@@ -44,9 +44,37 @@ function convertBytes(bytes) {
     const sizes = ['B', 'kB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     const size = sizes[i];
-    const value = (bytes / Math.pow(1024, i)).toFixed(0); 
+    const value = (bytes / Math.pow(1024, i)).toFixed(0);
 
     return `${value} ${size}`;
 }
 
-export { executeGraphQLQuery, convertBytes };
+function getUserRank(level) {
+    if (level >= 50) {
+        return 'Junior developer';
+    } else if (level >= 40) {
+        return 'Basic developer';
+    } else if (level >= 30) {
+        return 'Assistant developer';
+    } else if (level >= 20) {
+        return 'Apprentice developer';
+    } else if (level >= 10) {
+        return 'Beginner developer';
+    } else {
+        return 'Aspiring developer';
+    }
+}
+
+function formatAmount(amount) {
+    let amountInKB = amount / 1000;
+    let displayAmount = amountInKB;
+    let displayUnit = 'KB';
+    if (amountInKB > 1000) {
+        displayAmount = amountInKB / 1000;
+        displayUnit = 'MB';
+        displayAmount = Math.floor(displayAmount * 100) / 100;
+    }
+    return `${displayAmount.toFixed(displayUnit === 'MB' ? 2 : 0)} ${displayUnit}`;
+}
+
+export { executeGraphQLQuery, convertBytes, getUserRank, formatAmount };

@@ -1,6 +1,6 @@
 import { loginAuth, logout, checkAuth } from "./auth.js";
 import { homeHtml, loginHtml } from "./templates.js";
-import { executeGraphQLQuery, convertBytes } from "./utils.js";
+import { executeGraphQLQuery, convertBytes, getUserRank, formatAmount } from "./utils.js";
 import { queryUser, queryXp, queryAudits, querySkills, queryXpTotal, queryProject } from "./query.js";
 
 const Form = document.getElementById('loginForm');
@@ -51,11 +51,13 @@ async function fetchAllData() {
             Bienvenue, ${data.user.firstName} ${data.user.lastName} <br>
             Login: ${data.user.login} <br>
             Level: ${data.user.events[0].level}<br>
-            Total XP: ${convertBytes(data.xpTotal)}<br>
+            Rank: ${getUserRank(data.user.events[0].level)}<br>
+            Total XP: ${formatAmount(data.xpTotal)}<br>
             Audits ratio: ${data.user.auditRatio.toFixed(1)}<br>
             Audits Done: ${data.user.totalUp}<br>
             Audits Received: ${data.user.totalDown}<br>
             Skills: ${skillsString}<br>
+
         `;
         return data;
     } catch (error) {
