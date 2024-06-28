@@ -71,4 +71,23 @@ const queryProject = `{
   }
 }`;
 
+const lastProjectValidated = `{
+  xp_view: transaction(
+    where: {
+      type: {_eq: "xp"},
+      path: {_like: "%div-01%"},
+      _and: [
+        {path: {_nlike: "%piscine%"}},
+        {path: {_nlike: "%checkpoint%"}}
+      ]
+    },
+    order_by: {createdAt: desc},
+    limit: 1
+  ) {
+    amount
+    path
+  }
+}
+`
+
 export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal };

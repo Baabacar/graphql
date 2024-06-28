@@ -98,12 +98,4 @@ function renderLogin() {
 
 checkAuth();
 
-// fetchAllData().then(data => {
-//     if (data) {
-//         document.getElementById("userFullName").textContent = `Bienvenue, ${data.user.firstName} ${data.user.lastName}`;
-//         // Vous pouvez maintenant utiliser les autres données comme vous le souhaitez
-//         console.log(data);
-//     }
-// });
-
 export { addLogoutListener, fetchAllData as fetchUserData, renderHome, renderLogin };
