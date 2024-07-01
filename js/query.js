@@ -6,8 +6,6 @@ const queryUser = `{
     lastName
     campus
     auditRatio
-    totalUp
-    totalDown
     events(where: {eventId: {_eq: 56}}) {
       level
     }
@@ -57,17 +55,14 @@ const queryXpTotal = `{
 
 const queryProject = `{
   xp_view: transaction(
-    where: {
-      type: {_eq: "xp"},
-      path: {_like: "%div-01%"},
-      _and: [
-        {path: {_nlike: "%piscine%"}},
-        {path: {_nlike: "%checkpoint%"}}
-      ]
-    }
+  limit: 10, 
+    order_by: {createdAt: desc} 
+    where: {type: {_eq: "xp"}, path: {_like: "%div-01%"}, _and: [{path: {_nlike: "%piscine%"}}, {path: {_nlike: "%checkpoint%"}}]}
   ) {
     amount
-    path
+    object {
+      name
+    }
   }
 }`;
 

@@ -1,7 +1,9 @@
+// app.js
+
+import { returnChart, returnChartProject } from "./graph.js";
 import { loginHtml, homeHTML } from "./templates.js";
 import { updateAnimationInDom } from "./animation.js";
 import { loginAuth, logout, checkAuth } from "./auth.js";
-import { returnChart } from "./graph.js";
 import { executeGraphQLQuery, getUserRank, formatAmount, updateAnimationStrings } from "./utils.js";
 import { queryUser, queryXp, queryAudits, querySkills, queryXpTotal, queryProject, queryCurrentAndLastProject } from "./query.js";
 
@@ -32,7 +34,7 @@ async function fetchAllData() {
 
         if (!userResult || !userResult.user) {
             logout();
-            throw new Error("Structure de données invalide pour les utilisateurs");
+            throw new Error("Invalid data structure for users");
         }
 
         const progress = projectStatusResult?.progress || [];
@@ -54,7 +56,7 @@ async function fetchAllData() {
 
         return returnApi(data);
     } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
+        console.error("Error fetching data:", error);
         logout();
     }
 }
@@ -72,7 +74,6 @@ function returnApi(data) {
         skillsString += `${transaction.type.replace("skill_", "")}: ${transaction.amount}%<br>`;
     });
 
-    console.log(skillsString);
     const formattedXpTotal = formatAmount(data.xpTotal);
 
     const transformedData = {
@@ -86,12 +87,18 @@ function returnApi(data) {
         currentProject: data.currentProject,
         projectsDone: `You've completed  ${data.project.length}/126 projects`,
         skillNames: skillNames,
+        project: data.project.map(project => ({
+            name: project.object.name,
+            amount: formatAmount(project.amount).amount,
+            unit: formatAmount(project.amount).unit
+        })),
         skillAmounts: skillAmounts
     };
 
     const animationStrings = updateAnimationStrings(transformedData);
     displayData(transformedData, animationStrings);
 }
+
 
 function displayData(data, animationStrings) {
     const loginForm = document.getElementById('loginForm');
@@ -112,14 +119,26 @@ function displayData(data, animationStrings) {
     }
 
     setTimeout(() => {
-        const chart = returnChart(data.skillNames, data.skillAmounts); // Pass the data to the chart
+        const chart = returnChart(data.skillNames, data.skillAmounts);
         if (chart) {
-            chart.render(); 
+            chart.render();
         }
+    }, 0);
+
+    setTimeout(() => {
+        if (data.project && Array.isArray(data.project)) {
+            const projectNames = data.project.map(item => item.name);
+            const projectAmounts = data.project.map(item => item.amount);
+            const charts = returnChartProject(projectNames, projectAmounts);
+            if (charts) {
+                charts.render();
+            }
+        } 
     }, 0);
 
     addLogoutListener();
 }
+
 
 function renderHome() {
     const loginForm = document.getElementById('loginForm');
@@ -131,7 +150,6 @@ function renderHome() {
 }
 
 function renderLogin() {
-    // console.log("RENDER");
     const home = document.getElementById('home');
     const logoutbtn = document.getElementById('logoutBtn');
     const loginForm = document.getElementById('loginForm');

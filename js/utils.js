@@ -103,4 +103,5 @@ function updateAnimationStrings(data) {
     ];
 }
 
+
 export { executeGraphQLQuery, convertBytes, getUserRank, formatAmount, updateAnimationStrings};

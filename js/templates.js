@@ -70,7 +70,9 @@ const homeHTML = /* html */`
                 <div class="box box-progression">Progression</div>
             </div>
             <div class="bottom-row">
-                <div class="box box-projects">Projects</div>
+                <div class="box box-projects">Projects
+                    <div class="projet-graph" id="chartproject"></div>     
+                </div>        
                 <div class="box box-skills">
                     <h2>Skills</h2>
                     <div class="skills-graph" id="chart">
