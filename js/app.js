@@ -1,7 +1,7 @@
 import { loginHtml, homeHTML } from "./templates.js";
 import { updateAnimationInDom } from "./animation.js";
 import { loginAuth, logout, checkAuth } from "./auth.js";
-import { chart } from "./graph.js";
+import { returnChart } from "./graph.js";
 import { executeGraphQLQuery, getUserRank, formatAmount, updateAnimationStrings } from "./utils.js";
 import { queryUser, queryXp, queryAudits, querySkills, queryXpTotal, queryProject, queryCurrentAndLastProject } from "./query.js";
 
@@ -61,10 +61,18 @@ async function fetchAllData() {
 
 function returnApi(data) {
     let skillsString = '';
-    data.skills.forEach(transaction => {
+    const topSkills = data.skills
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 4);
+
+    const skillNames = topSkills.map(transaction => transaction.type.replace("skill_", ""));
+    const skillAmounts = topSkills.map(transaction => transaction.amount);
+
+    topSkills.forEach(transaction => {
         skillsString += `${transaction.type.replace("skill_", "")}: ${transaction.amount}%<br>`;
     });
 
+    console.log(skillsString);
     const formattedXpTotal = formatAmount(data.xpTotal);
 
     const transformedData = {
@@ -77,6 +85,8 @@ function returnApi(data) {
         lastProject: data.lastProject,
         currentProject: data.currentProject,
         projectsDone: `You've completed  ${data.project.length}/126 projects`,
+        skillNames: skillNames,
+        skillAmounts: skillAmounts
     };
 
     const animationStrings = updateAnimationStrings(transformedData);
@@ -101,12 +111,14 @@ function displayData(data, animationStrings) {
         updateAnimationInDom(animationStrings);
     }
 
-    const chartElement = document.querySelector("#chart");
-    if (chartElement) {
-        chart.render();
-    }
-    addLogoutListener();
+    setTimeout(() => {
+        const chart = returnChart(data.skillNames, data.skillAmounts); // Pass the data to the chart
+        if (chart) {
+            chart.render(); 
+        }
+    }, 0);
 
+    addLogoutListener();
 }
 
 function renderHome() {
@@ -119,7 +131,7 @@ function renderHome() {
 }
 
 function renderLogin() {
-    console.log("RENDER");
+    // console.log("RENDER");
     const home = document.getElementById('home');
     const logoutbtn = document.getElementById('logoutBtn');
     const loginForm = document.getElementById('loginForm');
@@ -143,5 +155,3 @@ function renderLogin() {
 checkAuth();
 
 export { addLogoutListener, fetchAllData as fetchUserData, renderHome, renderLogin };
-
-// graph skill , graph projet fait , graph nombre de xp gagner 

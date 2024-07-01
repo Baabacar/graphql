@@ -1,8 +1,9 @@
 var options = {
-    series: [76, 67, 61, 90],  // Placeholder data, update with actual data
+    series: [],  // Placeholder data, will be updated with actual data
     chart: {
-        height: 390,
+        height: 300,
         type: 'radialBar',
+        fontFamily: 'Exo 2, sans serif'
     },
     plotOptions: {
         radialBar: {
@@ -34,8 +35,8 @@ var options = {
             },
         }
     },
-    colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
-    labels: ['Vimeo', 'Messenger', 'Facebook', 'LinkedIn'],
+    colors: ['#38435c', '#000000', '#38435c', '#000000'],
+    labels: [],  // Placeholder labels, will be updated with actual data
     responsive: [{
         breakpoint: 480,
         options: {
@@ -46,6 +47,12 @@ var options = {
     }]
 };
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+function returnChart(skillNames = [], skillAmounts = []) {
+    options.series = skillAmounts;
+    options.labels = skillNames;
 
-export { chart };
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    return chart;
+}
+
+export { returnChart };

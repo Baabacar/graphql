@@ -47,7 +47,7 @@ const homeHTML = /* html */`
                             <div class="slide" style="background-color: var(--color2);">
                                 <div class="stat-item">
                                     <div class="xp-value">
-                                        <span class="number"></</span>
+                                        <span class="number"></span>
                                     </div>
                                     <p>current level</p>
                                 </div>
@@ -79,23 +79,5 @@ const homeHTML = /* html */`
             </div>
         </div>
     </div>
-`
-
-// const dataHtml = 
-const brouillon = `
-    <form class="form-control" id="loginForm">
-        <p class="title">Login</p>
-        <div class="input-field">
-          <input required="" class="input" id = "username" type="text" />
-          <label class="label" for="input">Enter Email</label>
-        </div>
-        <div class="input-field">
-          <input required="" class="input" id = "password" type="password" />
-          <label class="label" for="input">Enter Password</label>
-        </div>
-        <button class="submit-btn">Sign In</button>
-    </form>
-    <div id="userFullName"></div>
-    <button onclick="logout()">Logout</button>
 `
 export { loginHtml, homeHTML }
