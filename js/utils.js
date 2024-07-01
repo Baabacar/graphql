@@ -74,7 +74,10 @@ function formatAmount(amount) {
         displayUnit = 'MB';
         displayAmount = Math.floor(displayAmount * 100) / 100;
     }
-    return `${displayAmount.toFixed(displayUnit === 'MB' ? 2 : 0)} ${displayUnit}`;
+    return {
+        amount: displayAmount.toFixed(displayUnit === 'MB' ? 2 : 0),
+        unit: displayUnit
+    };
 }
 
 export { executeGraphQLQuery, convertBytes, getUserRank, formatAmount };

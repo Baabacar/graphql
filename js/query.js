@@ -71,23 +71,18 @@ const queryProject = `{
   }
 }`;
 
-const lastProjectValidated = `{
-  xp_view: transaction(
-    where: {
-      type: {_eq: "xp"},
-      path: {_like: "%div-01%"},
-      _and: [
-        {path: {_nlike: "%piscine%"}},
-        {path: {_nlike: "%checkpoint%"}}
-      ]
-    },
-    order_by: {createdAt: desc},
-    limit: 1
-  ) {
-    amount
-    path
+
+const queryCurrentAndLastProject = `{
+  progress(where: {eventId: {_eq: 56}}, order_by: {createdAt: desc}) {
+    group {
+      status
+      createdAt
+      object {
+        name
+      }
+    }
   }
 }
 `
 
-export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal };
+export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal, queryCurrentAndLastProject };
