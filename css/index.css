@@ -128,7 +128,7 @@ header {
 
 .slide:nth-child(3) {
     z-index: 3;
-    animation: slideOver 15s infinite;
+    animation: slideOver 15s infinite 7s;
 }
 
 .stat-item {
@@ -167,7 +167,7 @@ header {
 .box-working {
     color: white;
     background-color: var(--color3);
-    flex: 1;
+    flex: 1; 
     justify-content: center;
     align-items: center;
     font-size: 1.2em;
@@ -259,3 +259,83 @@ header {
 .welcome-message {
     font-size: 1.2em;
 }
+
+
+/* ..............................login */
+.form {
+    --bg-light: var(--color1);
+    --bg-dark: var(--color6);
+    --clr: white;
+    --clr-alpha: var(--color3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .form .input-span {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form input[type="text"],
+  .form input[type="password"] {
+    border-radius: 0.5rem;
+    padding: 1rem 0.75rem;
+    width: 100%;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1em;
+    background-color: var(--clr-alpha);
+    color: white;
+    outline: 2px solid var(--bg-dark);
+  }
+  
+  .form input[type="text"]:focus,
+  .form input[type="password"]:focus {
+    outline: 2px solid var(--clr);
+  }
+  
+  .label {
+    align-self: flex-start;
+    color: var(--clr);
+    font-weight: 600;
+  }
+  
+  .form .submit {
+    padding: 1rem 0.75rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 3rem;
+    background-color: var(--bg-dark);
+    color: var(--bg-light);
+    border: none;
+    cursor: pointer;
+    transition: all 300ms;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  /* .form .submit:hover {
+    background-color: var(--bg-dark);
+    color: var(--bg-dark);
+  } */
+  
+  .span {
+    text-decoration: none;
+    color: var(--bg-dark);
+  }
+  
+  .span a {
+    color: var(--clr);
+  }
+  

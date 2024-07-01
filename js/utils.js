@@ -80,4 +80,27 @@ function formatAmount(amount) {
     };
 }
 
-export { executeGraphQLQuery, convertBytes, getUserRank, formatAmount };
+function updateAnimationStrings(data) {
+    let lastProjectString;
+    if (data.lastProject === 'N/A') {
+        lastProjectString = "You haven't completed any projects yet";
+    } else {
+        lastProjectString = `You're latest project is ${data.lastProject}`;
+    }
+
+    let currentProjectString;
+    if (data.currentProject === 'N/A') {
+        currentProjectString = "You're currently INACTIVE";
+    } else {
+        currentProjectString = `You're working on ${data.currentProject}`;
+    }
+
+    return [
+        currentProjectString,
+        data.rank,
+        lastProjectString,
+        data.projectsDone,
+    ];
+}
+
+export { executeGraphQLQuery, convertBytes, getUserRank, formatAmount, updateAnimationStrings};

@@ -61,33 +61,29 @@ const resolver = {
     }
 }
 
-const strings = [
-    'You\'re working on real-time-forum',
-    'You\'re an Apprentice developer',
-    'You\'re lastest projet is make-your-game',
-    'you made it 32 / 126 project',
-];
-
+let strings = [];
 let counter = 0;
+let isAnimating = false;
+let animationTimeout;
 
 const options = {
     // Initial position
     offset: 0,
     // Timeout between each random character
-    timeout: 6,
+    timeout: 5,
     // Number of random characters to show
     iterations: 10,
     // Random characters to pick from
     characters: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z'],
     // String to resolve
-    resolveString: strings[counter],
+    resolveString: '',
     // The element
-    element: document.querySelector('[data-target-resolver]')
+    element: null
 }
 
 // Callback function when resolve completes
 function callback() {
-    setTimeout(() => {
+    animationTimeout = setTimeout(() => {
         counter++;
 
         if (counter >= strings.length) {
@@ -99,8 +95,32 @@ function callback() {
     }, 1000);
 }
 
-function textAnimate(){
-    resolver.resolve(options, callback);
+function stopAnimation() {
+    clearTimeout(animationTimeout);
+    isAnimating = false;
 }
 
-export {textAnimate}
+export function updateAnimationInDom(newStrings) {
+    stopAnimation();
+    strings = newStrings;
+    counter = 0;
+    
+    // Reset the animation
+    const element = document.querySelector('[data-target-resolver]');
+    if (element) {
+        options.element = element;
+        options.resolveString = strings[counter];
+        isAnimating = true;
+        resolver.resolve(options, callback);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('[data-target-resolver]');
+    if (element && strings.length > 0) {
+        options.element = element;
+        options.resolveString = strings[counter];
+        isAnimating = true;
+        resolver.resolve(options, callback);
+    }
+});

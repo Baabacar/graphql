@@ -1,7 +1,8 @@
 import { loginHtml, homeHTML } from "./templates.js";
-import { textAnimate } from "./animation.js";
+import { updateAnimationInDom } from "./animation.js";
 import { loginAuth, logout, checkAuth } from "./auth.js";
-import { executeGraphQLQuery, convertBytes, getUserRank, formatAmount } from "./utils.js";
+import { chart } from "./graph.js";
+import { executeGraphQLQuery, getUserRank, formatAmount, updateAnimationStrings } from "./utils.js";
 import { queryUser, queryXp, queryAudits, querySkills, queryXpTotal, queryProject, queryCurrentAndLastProject } from "./query.js";
 
 const Form = document.getElementById('loginForm');
@@ -34,13 +35,11 @@ async function fetchAllData() {
             throw new Error("Structure de données invalide pour les utilisateurs");
         }
 
-        // Ensure projectStatusResult and progress are properly defined
         const progress = projectStatusResult?.progress || [];
-        
-        // Find the current and last projects
+
         const currentProject = progress.find(item => item.group && item.group.status === "working");
         const lastProject = progress.filter(item => item.group && item.group.status === "finished")
-                                    .sort((a, b) => new Date(b.group.createdAt) - new Date(a.group.createdAt))[0];
+            .sort((a, b) => new Date(b.group.createdAt) - new Date(a.group.createdAt))[0];
 
         const data = {
             user: userResult.user[0],
@@ -60,12 +59,10 @@ async function fetchAllData() {
     }
 }
 
-
 function returnApi(data) {
-    // Préparer les données pour l'affichage
     let skillsString = '';
     data.skills.forEach(transaction => {
-        skillsString += `${transaction.type.replace("skill_","")}: ${transaction.amount}%<br>`;
+        skillsString += `${transaction.type.replace("skill_", "")}: ${transaction.amount}%<br>`;
     });
 
     const formattedXpTotal = formatAmount(data.xpTotal);
@@ -77,16 +74,39 @@ function returnApi(data) {
         xpTotal: `${formattedXpTotal.amount}`,
         xpUnit: formattedXpTotal.unit,
         rank: `You're an ${getUserRank(data.user.events[0].level)}`,
-        lastProject: `You're latest project is ${data.lastProject}`,
-        currentProject: `You're working on ${data.currentProject}`,
-        skills: `Skills: ${skillsString}`,
+        lastProject: data.lastProject,
+        currentProject: data.currentProject,
+        projectsDone: `You've completed  ${data.project.length}/126 projects`,
     };
 
-    displayData(transformedData);
+    const animationStrings = updateAnimationStrings(transformedData);
+    displayData(transformedData, animationStrings);
 }
 
-function displayData(data) {
-    
+function displayData(data, animationStrings) {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.remove();
+    }
+
+    document.body.insertAdjacentHTML('beforeend', homeHTML);
+
+    document.querySelector('.welcome-message strong').textContent = data.userFullName;
+    document.querySelector('.slide:nth-child(1) .number').textContent = data.auditRatio;
+    document.querySelector('.slide:nth-child(2) .number').textContent = data.level;
+    document.querySelector('.slide:nth-child(3) .number').textContent = data.xpTotal;
+    document.querySelector('.slide:nth-child(3) .unit').textContent = data.xpUnit;
+
+    if (typeof updateAnimationInDom === 'function') {
+        updateAnimationInDom(animationStrings);
+    }
+
+    const chartElement = document.querySelector("#chart");
+    if (chartElement) {
+        chart.render();
+    }
+    addLogoutListener();
+
 }
 
 function renderHome() {
@@ -113,6 +133,7 @@ function renderLogin() {
         logoutbtn.remove();
     }
     document.body.insertAdjacentHTML('beforeend', loginHtml);
+
     const form = document.getElementById('loginForm');
     if (form) {
         form.addEventListener("submit", loginAuth);
@@ -123,5 +144,4 @@ checkAuth();
 
 export { addLogoutListener, fetchAllData as fetchUserData, renderHome, renderLogin };
 
-// firstname, lastname, xptotal, level,  rank, ratio, projet actuelle, derniere projet, nbr total de projet fait
 // graph skill , graph projet fait , graph nombre de xp gagner 

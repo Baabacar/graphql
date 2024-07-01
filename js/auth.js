@@ -20,7 +20,7 @@ async function loginAuth(evt) {
 
     const data = await response.json();
     localStorage.setItem("jwt", data);
-    renderHome();
+    // renderHome();
     fetchUserData();  // Appel mis à jour
   } catch (error) {
     alert("Invalid credentials");
@@ -38,7 +38,7 @@ function checkAuth() {
   if (!jwt) {
     renderLogin();
   } else {
-    renderHome();
+    // renderHome();
     fetchUserData();  // Appel mis à jour
   }
 }
