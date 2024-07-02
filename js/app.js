@@ -1,11 +1,9 @@
-// app.js
-
-import { returnChart, returnChartProject } from "./graph.js";
 import { loginHtml, homeHTML } from "./templates.js";
 import { updateAnimationInDom } from "./animation.js";
 import { loginAuth, logout, checkAuth } from "./auth.js";
+import { returnChart, returnChartProject, returnChartProgression } from "./graph.js";
 import { executeGraphQLQuery, getUserRank, formatAmount, updateAnimationStrings } from "./utils.js";
-import { queryUser, queryXp, queryAudits, querySkills, queryXpTotal, queryProject, queryCurrentAndLastProject } from "./query.js";
+import { queryUser, queryXp, querySkills, queryXpTotal, queryProject, queryCurrentAndLastProject, queryTotalProjet } from "./query.js";
 
 const Form = document.getElementById('loginForm');
 
@@ -22,10 +20,10 @@ function addLogoutListener() {
 
 async function fetchAllData() {
     try {
-        const [userResult, xpResult, auditsResult, skillsResult, xpTotalResult, projectResult, projectStatusResult] = await Promise.all([
+        const [userResult, xpResult, totalProjetResult, skillsResult, xpTotalResult, projectResult, projectStatusResult] = await Promise.all([
             executeGraphQLQuery(queryUser),
             executeGraphQLQuery(queryXp),
-            executeGraphQLQuery(queryAudits),
+            executeGraphQLQuery(queryTotalProjet),
             executeGraphQLQuery(querySkills),
             executeGraphQLQuery(queryXpTotal),
             executeGraphQLQuery(queryProject),
@@ -43,10 +41,15 @@ async function fetchAllData() {
         const lastProject = progress.filter(item => item.group && item.group.status === "finished")
             .sort((a, b) => new Date(b.group.createdAt) - new Date(a.group.createdAt))[0];
 
+        const xpData = xpResult.transaction.map(xp => ({
+            date: xp.createdAt,
+            amount: xp.amount
+        }));
+
         const data = {
             user: userResult.user[0],
-            xp: xpResult.transaction,
-            audits: auditsResult.transaction,
+            xp: xpData,
+            totalProject: totalProjetResult.xp_view,
             skills: skillsResult.transaction,
             xpTotal: xpTotalResult.transaction_aggregate.aggregate.sum.amount,
             project: projectResult.xp_view,
@@ -85,14 +88,15 @@ function returnApi(data) {
         rank: `You're an ${getUserRank(data.user.events[0].level)}`,
         lastProject: data.lastProject,
         currentProject: data.currentProject,
-        projectsDone: `You've completed  ${data.project.length}/126 projects`,
+        projectsDone: `You've completed  ${data.totalProject.length}/126 projects`,
         skillNames: skillNames,
         project: data.project.map(project => ({
             name: project.object.name,
             amount: formatAmount(project.amount).amount,
             unit: formatAmount(project.amount).unit
         })),
-        skillAmounts: skillAmounts
+        skillAmounts: skillAmounts,
+        xpProgression: data.xp
     };
 
     const animationStrings = updateAnimationStrings(transformedData);
@@ -134,6 +138,13 @@ function displayData(data, animationStrings) {
                 charts.render();
             }
         } 
+    }, 0);
+
+    setTimeout(() => {
+        const chart = returnChartProgression(data.xpProgression);
+        if (chart) {
+            chart.render();
+        }
     }, 0);
 
     addLogoutListener();

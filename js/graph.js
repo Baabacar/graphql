@@ -1,4 +1,3 @@
-
 var optionsSkills = {
     series: [],
     chart: {
@@ -133,6 +132,50 @@ var optionsProject = {
     },
 };
 
+var optionsProgression = {
+    series: [],
+    chart: {
+        toolbar: false,
+        height: 350,
+        type: 'area'
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    xaxis: {
+        type: 'datetime',
+        categories: [],
+        labels: {
+            style: {
+                colors: Array(100).fill('white'), // Assurez-vous que toutes les étiquettes sont blanches
+                fontSize: '12px', // Ajustez éventuellement la taille de la police
+                fontFamily: 'Exo 2, sans serif', // Ajustez éventuellement la famille de polices
+                fontWeight: 400, // Ajustez éventuellement le poids de la police
+                cssClass: 'custom-xaxis-label' // Ajoutez une classe CSS personnalisée si nécessaire
+            }
+        }
+    },
+    tooltip: {
+        x: {
+            format: 'dd/MM/yy'
+        },
+        style: {
+            fontSize: '12px',
+            fontFamily: 'Exo 2, sans serif',
+            colors: ['blue'] // Changez ici la couleur du texte de tooltip souhaitée
+        },
+        onDatasetHover: {
+            highlightDataSeries: true, // Activez la mise en évidence de la série de données au survol
+        },
+    },
+    colors: ['#FFFFFF'] // Changez ici la couleur souhaitée du graphique
+};
+
+
+
 function returnChart(skillNames = [], skillAmounts = []) {
     optionsSkills.series = skillAmounts;
     optionsSkills.labels = skillNames;
@@ -152,68 +195,18 @@ function returnChartProject(projectNames = [], projectAmounts = []) {
     return chart;
 }
 
-// var options = {
-//     series: [{
-//         name: 'XYZ MOTORS',
-//         data: dates
-//     }],
-//     chart: {
-//         type: 'area',
-//         stacked: false,
-//         height: 350,
-//         zoom: {
-//             type: 'x',
-//             enabled: true,
-//             autoScaleYaxis: true
-//         },
-//         toolbar: {
-//             autoSelected: 'zoom'
-//         }
-//     },
-//     dataLabels: {
-//         enabled: false
-//     },
-//     markers: {
-//         size: 0,
-//     },
-//     title: {
-//         text: 'Stock Price Movement',
-//         align: 'left'
-//     },
-//     fill: {
-//         type: 'gradient',
-//         gradient: {
-//             shadeIntensity: 1,
-//             inverseColors: false,
-//             opacityFrom: 0.5,
-//             opacityTo: 0,
-//             stops: [0, 90, 100]
-//         },
-//     },
-//     yaxis: {
-//         labels: {
-//             formatter: function (val) {
-//                 return (val / 1000000).toFixed(0);
-//             },
-//         },
-//         title: {
-//             text: 'Price'
-//         },
-//     },
-//     xaxis: {
-//         type: 'datetime',
-//     },
-//     tooltip: {
-//         shared: false,
-//         y: {
-//             formatter: function (val) {
-//                 return (val / 1000000).toFixed(0)
-//             }
-//         }
-//     }
-// };
+function returnChartProgression(xpData = []) {
+    const dates = xpData.map(data => data.date);
+    const amounts = xpData.map(data => data.amount);
 
-// var chart = new ApexCharts(document.querySelector("#chart"), options);
-// chart.render();
+    optionsProgression.series = [{
+        name: 'XP',
+        data: amounts
+    }];
+    optionsProgression.xaxis.categories = dates;
 
-export { returnChart, returnChartProject };
+    var chart = new ApexCharts(document.querySelector("#chartProgression"), optionsProgression);
+    return chart;
+}
+
+export { returnChart, returnChartProject, returnChartProgression };

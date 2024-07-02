@@ -17,8 +17,7 @@ const homeHTML = /* html */`
     <div class="main-container" id="home">
         <header>
             <div class="logo">
-                <img src="./assets/0.svg" alt="">
-                <img src="./assets/1.svg" alt="">
+                <img src="./assets/favicon.svg" alt="">
             </div>
             <p class="welcome-message">welcome <strong></strong>!</p>
             <button class="Btn" id="logoutBtn">
@@ -67,7 +66,9 @@ const homeHTML = /* html */`
                             <p class="heading" data-target-resolver></p>
                         </strong></div>
                 </div>
-                <div class="box box-progression">Progression</div>
+                <div class="box box-progression">Progression
+                    <div id="chartProgression"> </div>
+                </div>
             </div>
             <div class="bottom-row">
                 <div class="box box-projects">Projects

@@ -13,20 +13,12 @@ const queryUser = `{
 }`;
 
 const queryXp = `{
-  transaction(where: {type: {_eq: "xp"}, eventId: {_eq: 56}}) {
+  transaction(order_by: {createdAt: desc} where: {type: {_eq: "xp"}, eventId: {_eq: 56}}) {
     createdAt
     amount
-    path
-    type
-  }
-}`;
-
-const queryAudits = `{
-  transaction(order_by: {createdAt: asc}, where: {type: {_regex: "up|down"}}) {
-    type
-    amount
-    path
-    createdAt
+    object{
+      name
+    }
   }
 }`;
 
@@ -67,6 +59,20 @@ const queryProject = `{
 }`;
 
 
+const queryTotalProjet = `{
+  xp_view: transaction(
+    order_by: {createdAt: desc} 
+    where: {type: {_eq: "xp"}, path: {_like: "%div-01%"}, _and: [{path: {_nlike: "%piscine%"}}, {path: {_nlike: "%checkpoint%"}}]}
+  ) {
+    amount
+    object {
+      name
+    }
+  }
+}
+`
+
+
 const queryCurrentAndLastProject = `{
   progress(where: {eventId: {_eq: 56}}, order_by: {createdAt: desc}) {
     group {
@@ -80,4 +86,4 @@ const queryCurrentAndLastProject = `{
 }
 `
 
-export { queryAudits, queryProject, querySkills, queryUser, queryXp, queryXpTotal, queryCurrentAndLastProject };
+export { queryProject, querySkills, queryUser, queryXp, queryXpTotal, queryCurrentAndLastProject, queryTotalProjet };
