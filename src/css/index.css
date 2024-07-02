@@ -25,7 +25,7 @@
 
 html, body {
     height: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body {
@@ -34,7 +34,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    overflow-y: auto;
+    /* overflow-y: auto; */
 }
 
 .main-container {
