@@ -1,5 +1,6 @@
 const loginHtml = /* html */`
-    <form class="form" id="loginForm">>
+<div class="login-container" id="loginForm">
+    <form class="form" >
         <span class="input-span">
             <label for="email" class="label">Email</label>
             <input required="" type="text" name="email" id="username"/>
@@ -9,7 +10,9 @@ const loginHtml = /* html */`
             <input required="" type="password" name="password" id="password"/>
         </span>
         <button class="submit">Log In</button>
+        <div id="error" class="error" style="display: none;"></div>
     </form>
+    </div>
 `;
 
 
@@ -17,7 +20,7 @@ const homeHTML = /* html */`
     <div class="main-container" id="home">
         <header>
             <div class="logo">
-                <img src="./assets/favicon.svg" alt="">
+                <img src="../src/assets/favicon.svg" alt="">
             </div>
             <p class="welcome-message">welcome <strong></strong>!</p>
             <button class="Btn" id="logoutBtn">

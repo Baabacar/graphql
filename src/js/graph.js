@@ -136,7 +136,7 @@ var optionsProgression = {
     series: [],
     chart: {
         toolbar: false,
-        height: 350,
+        height: 260,
         type: 'area'
     },
     dataLabels: {

@@ -20,12 +20,19 @@ async function loginAuth(evt) {
 
     const data = await response.json();
     localStorage.setItem("jwt", data);
-    // renderHome();
-    fetchUserData();  // Appel mis à jour
+    fetchUserData();
   } catch (error) {
-    alert("Invalid credentials");
+    const errorElement = document.getElementById('error');
+    errorElement.innerHTML = "<p>Invalid credentials</p>";
+    errorElement.style.display = 'block';
+
+    setTimeout(() => {
+      errorElement.style.display = 'none';
+      errorElement.innerHTML = "";
+    }, 3000);
   }
 }
+
 
 function logout() {
   console.log('LOGOUT');

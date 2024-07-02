@@ -23,25 +23,27 @@
     font-family: var(--font-text);
 }
 
-html,
-body {
+html, body {
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 body {
     background-color: var(--color1);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-y: auto;
 }
 
 .main-container {
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     padding: 50px 80px;
+    overflow-y: auto;
 }
 
 header {
@@ -112,19 +114,13 @@ header {
 }
 
 @keyframes slideOver {
-
-    0%,
-    33.33% {
+    0%, 33.33% {
         transform: translateX(100%);
     }
-
-    33.33%,
-    66.66% {
+    33.33%, 66.66% {
         transform: translateX(0%);
     }
-
-    66.66%,
-    100% {
+    66.66%, 100% {
         transform: translateX(100%);
     }
 }
@@ -187,9 +183,7 @@ header {
     overflow: hidden;
     position: relative;
     min-height: 150px;
-    /* Ajoutez cette ligne */
     padding: 40px;
-    /* Augmentez le padding */
 }
 
 .box-working strong {
@@ -198,17 +192,14 @@ header {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
-    /* Réduisez légèrement la largeur */
     text-align: center;
     padding: 0 20px;
 }
 
 .box-working p {
-    font-size: 1.1em;
-    /* Augmentez légèrement la taille de la police */
+    font-size: 1em;
     margin: 0;
     line-height: 1.4;
-    /* Ajoutez cette ligne pour améliorer l'espacement des lignes */
 }
 
 .box-progression {
@@ -294,8 +285,15 @@ header {
     font-size: 1.2em;
 }
 
+/* Login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
 
-/* ..............................login */
 .form {
     --bg-light: var(--color1);
     --bg-dark: var(--color6);
@@ -307,6 +305,10 @@ header {
     gap: 1rem;
     width: 100%;
     max-width: 300px;
+    background-color: var(--color1);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .form .input-span {
@@ -357,12 +359,8 @@ header {
     transition: all 300ms;
     font-weight: 600;
     font-size: 0.9rem;
+    margin-top: 20px;
 }
-
-/* .form .submit:hover {
-    background-color: var(--bg-dark);
-    color: var(--bg-dark);
-  } */
 
 .span {
     text-decoration: none;
@@ -371,4 +369,64 @@ header {
 
 .span a {
     color: var(--clr);
+}
+
+.error {
+    color: var(--clr-1);
+}
+
+
+@media (max-width: 1200px) {
+    .main-container {
+        padding: 30px 40px;
+    }
+
+    .top-row, .bottom-row {
+        flex-direction: column;
+    }
+
+    .left-column {
+        width: 100%;
+    }
+
+    .box-skills {
+        width: 100%;
+    }
+
+    body, .main-container {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .container {
+        flex: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .box {
+        padding: 20px;
+    }
+
+    .top-row, .bottom-row {
+        flex: none;
+    }
+
+    .login-container {
+        padding: 20px;
+    }
+
+    .form {
+        padding: 30px;
+    }
 }

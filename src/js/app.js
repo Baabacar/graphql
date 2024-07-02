@@ -80,7 +80,7 @@ function returnApi(data) {
     const formattedXpTotal = formatAmount(data.xpTotal);
 
     const transformedData = {
-        userFullName: `${data.user.firstName} ${data.user.lastName}`,
+        userFullName : `${data.user.firstName} ${data.user.lastName.toUpperCase()}`,
         level: `${data.user.events[0].level}`,
         auditRatio: `${data.user.auditRatio.toFixed(1)}`,
         xpTotal: `${formattedXpTotal.amount}`,
@@ -102,7 +102,6 @@ function returnApi(data) {
     const animationStrings = updateAnimationStrings(transformedData);
     displayData(transformedData, animationStrings);
 }
-
 
 function displayData(data, animationStrings) {
     const loginForm = document.getElementById('loginForm');
@@ -149,7 +148,6 @@ function displayData(data, animationStrings) {
 
     addLogoutListener();
 }
-
 
 function renderHome() {
     const loginForm = document.getElementById('loginForm');
