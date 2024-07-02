@@ -20,7 +20,7 @@ const homeHTML = /* html */`
     <div class="main-container" id="home">
         <header>
             <div class="logo">
-                <img src="../src/assets/favicon.svg" alt="">
+                <img src="./src/assets/favicon.svg" alt="">
             </div>
             <p class="welcome-message">welcome <strong></strong>!</p>
             <button class="Btn" id="logoutBtn">
